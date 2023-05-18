@@ -44,13 +44,38 @@ async function run() {
         console.log(result)
       })
 
+      ///my toys finding 
+      app.get("/myToys/:email", async (req, res) => {     
+        const toys = await toysCollection.find({ email: req. params.email}).toArray();
+        res.send(toys);
+      });
+
+      //update 
+      app.put("/updateToys/:id", async (req, res) => {
+        const id = req.params.id;
+        const body = req.body;
+        // console.log(body);
+        const filter = { _id: new ObjectId(id) };
+        const updateToys = {
+          $set: {
+            price: body.price,
+            description: body.description,
+            category: body.category,
+            name:body.name
+          },
+        };
+        const result = await toysCollection.updateOne(filter, updateToys);
+        res.send(result);
+      });
+   
+
       // post collection method
       app.post('/toysDetails',async(req,res)=>{
         const added=req.body;
         const result= await toysCollection.insertOne(added)
         res.send(result)
       })
-
+  
     // await client.connect();
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -59,10 +84,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
-
-
-
 
 app.get('/',(req,res)=>{
 res.send('Toys market is Running')
