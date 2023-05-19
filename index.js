@@ -28,6 +28,8 @@ async function run() {
         const result = await cursor.toArray();
         res.send(result);
       })
+
+
       ///get blogs data
       app.get('/blogs',async(req,res)=>{
         const cursor=BlogsCollection.find()
@@ -37,7 +39,7 @@ async function run() {
       //filter data
       app.get("/toysDetails/:category",async(req,res)=>{
         const category =req.params.category;
-        const query={category:{category}}
+        const query={category:category}
         const cursor = toysCollection.find(query);
          const result = await cursor.toArray();
         res.send(result)
@@ -52,11 +54,12 @@ async function run() {
 
       //update 
       app.put("/updateToys/:id", async (req, res) => {
-        const id = req.params.id;
+        const id = req.params.id; 
+        console.log(id)    
         const body = req.body;
         // console.log(body);
         const filter = { _id: new ObjectId(id) };
-        const updateToys = {
+        const updatedToys = {
           $set: {
             price: body.price,
             description: body.description,
@@ -64,7 +67,7 @@ async function run() {
             name:body.name
           },
         };
-        const result = await toysCollection.updateOne(filter, updateToys);
+        const result = await toysCollection.updateOne(updatedToys,filter);
         res.send(result);
       });
    
