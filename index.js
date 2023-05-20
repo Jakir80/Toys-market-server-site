@@ -75,7 +75,6 @@ async function run() {
 
     //image gallery own
 
-
     //update 
     app.put("/updateToys/:id", async (req, res) => {
       const id = req.params.id;
@@ -93,16 +92,13 @@ async function run() {
       res.send(result);
     });
     ///delete data
-    app.delete('/updateToys/:id', async (res, req) => {
+    app.delete('/delete/:id', async (req,res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) }
       const result = await toysCollection.deleteOne(query)
       res.send(result)
     })
     //  search options
-    const indexkeys = { name: 1, category: 1 }
-    const indexoptions = { name: "nameCategory" }
-    const result = await toysCollection.createIndex(indexkeys, indexoptions)
     app.get('/toysSearch/:search', async (req, res) => {
       const searchtext = req.params.search;
       const result = await toysCollection.find({
