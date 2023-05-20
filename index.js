@@ -23,7 +23,7 @@ async function run() {
 
     //get Collection method
     const toysCollection = client.db('ToysDB').collection('toysDetails')
-    const imageCollection = client.db('ToysDb').collection('images')
+    const imageCollection = client.db('ToysDB').collection('images')
     app.get('/toysDetails', async (req, res) => {
       const cursor = toysCollection.find();
       const result = await cursor.toArray();
@@ -46,7 +46,7 @@ async function run() {
 
     // get own image 
     app.get("/gallery", async (req, res) => {
-      const cursor = imageCollection.find()
+      const cursor =  imageCollection.find()
       const result = await cursor.toArray()
       res.send(result)
     })
@@ -84,8 +84,7 @@ async function run() {
         $set: {
           price: body.price,
           description: body.description,
-          category: body.category,
-          name: body.name
+          quantity:body.quantity
         },
       };
       const result = await toysCollection.updateOne(filter, updatedToys,);
