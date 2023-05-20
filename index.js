@@ -20,9 +20,9 @@ async function run() {
   try {
     //get blog data
     const BlogsCollection = client.db('ToysDB').collection('Blogs')
-
     //get Collection method
     const toysCollection = client.db('ToysDB').collection('toysDetails')
+    //get image collection
     const imageCollection = client.db('ToysDB').collection('images')
     app.get('/toysDetails', async (req, res) => {
       const cursor = toysCollection.find();
@@ -43,14 +43,12 @@ async function run() {
       const result = await toysCollection.findOne(query)
       res.send(result)
     })
-
     // get own image 
     app.get("/gallery", async (req, res) => {
-      const cursor =  imageCollection.find()
+      const cursor = imageCollection.find()
       const result = await cursor.toArray()
       res.send(result)
     })
-
     ///get blogs data
     app.get('/blogs', async (req, res) => {
       const cursor = BlogsCollection.find()
@@ -72,7 +70,6 @@ async function run() {
       const toys = await toysCollection.find({ email: req.params.email }).toArray();
       res.send(toys);
     });
-
     //update  toys
     app.put("/updateToys/:id", async (req, res) => {
       const id = req.params.id;
@@ -82,20 +79,20 @@ async function run() {
         $set: {
           price: body.price,
           description: body.description,
-          quantity:body.quantity
+          quantity: body.quantity
         },
       };
       const result = await toysCollection.updateOne(filter, updatedToys,);
       res.send(result);
     });
     ///delete data
-    app.delete('/delete/:id', async (req,res) => {
+    app.delete('/delete/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) }
       const result = await toysCollection.deleteOne(query)
       res.send(result)
     })
-    //  search options
+    //  search options create dynamic search
     app.get('/toysSearch/:search', async (req, res) => {
       const searchtext = req.params.search;
       const result = await toysCollection.find({
@@ -112,8 +109,6 @@ async function run() {
       const result = await toysCollection.insertOne(added)
       res.send(result)
     })
-
-    // await client.connect();
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
