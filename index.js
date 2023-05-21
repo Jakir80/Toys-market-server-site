@@ -25,7 +25,7 @@ async function run() {
     //get image collection
     const imageCollection = client.db('ToysDB').collection('images')
     app.get('/toysDetails', async (req, res) => {
-      const cursor = toysCollection.find();
+      const cursor = toysCollection.find().limit(20);
       const result = await cursor.toArray();
       res.send(result);
     })
@@ -85,6 +85,15 @@ async function run() {
       const result = await toysCollection.updateOne(filter, updatedToys,);
       res.send(result);
     });
+
+
+    //sort data based on price 
+
+
+
+
+
+
     ///delete data
     app.delete('/delete/:id', async (req, res) => {
       const id = req.params.id;
